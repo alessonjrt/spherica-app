@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:spherica/models/reminder.dart';
 
 import '/backend/schema/structs/index.dart';
 import '/backend/schema/enums/enums.dart';
@@ -217,7 +218,10 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'EditReminder',
           path: '/editReminder',
-          builder: (context, params) => EditReminderWidget(),
+          builder: (context, params) => EditReminderWidget(reminderId: params.getParam(
+              'reminderId',
+              ParamType.int,
+            ) ),
         ),
         FFRoute(
           name: 'Profile',

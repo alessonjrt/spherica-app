@@ -1,3 +1,6 @@
+import 'package:spherica/models/reminder.dart';
+import 'package:spherica/services/reminder_service.dart';
+
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -15,7 +18,8 @@ import 'edit_reminder_model.dart';
 export 'edit_reminder_model.dart';
 
 class EditReminderWidget extends StatefulWidget {
-  const EditReminderWidget({super.key});
+  final int? reminderId;
+  const EditReminderWidget({super.key, required this.reminderId});
 
   @override
   State<EditReminderWidget> createState() => _EditReminderWidgetState();
@@ -23,32 +27,37 @@ class EditReminderWidget extends StatefulWidget {
 
 class _EditReminderWidgetState extends State<EditReminderWidget> {
   late EditReminderModel _model;
-
+  late Reminder _reminder;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => EditReminderModel());
 
-    _model.timeTextController ??= TextEditingController(text: '00:30');
+    // Cria e inicializa o modelo de edição de lembrete
+    _model = createModel(context, () => EditReminderModel());
+    _reminder = _model.reminderManager.getReminderById(widget.reminderId!)!;
+
+    // Inicializa o controlador de repetição de horas com o valor do lembrete
+    _model.reapeatHourValueController ??= FormFieldController<String>(
+      _model.getHourlyInterval(_reminder.repeatInterval),
+    );
+
+    // Inicializa os controladores e nós de foco com os valores do lembrete
+    _model.timeTextController ??= TextEditingController(
+        text:
+            '${_reminder.hour.toString().padLeft(2, '0')}:${_reminder.minute.toString().padLeft(2, '0')}');
     _model.timeFocusNode ??= FocusNode();
 
-    _model.titleTextController ??= TextEditingController();
+    _model.titleTextController ??= TextEditingController(text: _reminder.title);
     _model.titleFocusNode ??= FocusNode();
 
     _model.useTextController ??=
-        TextEditingController(text: '5 gotas em cada olho');
+        TextEditingController(text: _reminder.description);
     _model.useFocusNode ??= FocusNode();
 
+    // Adiciona um callback para atualizar o estado do widget após o build
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
-  }
-
-  @override
-  void dispose() {
-    _model.dispose();
-
-    super.dispose();
   }
 
   @override
@@ -78,7 +87,7 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
             },
           ),
           title: Text(
-            'Colírio',
+            _reminder.title,
             style: FlutterFlowTheme.of(context).titleMedium.override(
                   fontFamily: 'Inter',
                   letterSpacing: 0.0,
@@ -109,30 +118,29 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 16.0, 16.0, 0.0),
+                        padding: EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
                         child: SingleChildScrollView(
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 0.0, 12.0),
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 0, 0, 12),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 0.0, 4.0),
+                                          0, 0, 0, 4),
                                       child: Text(
                                         'Horário',
                                         style: FlutterFlowTheme.of(context)
                                             .labelMedium
                                             .override(
                                               fontFamily: 'Inter',
-                                              letterSpacing: 0.0,
+                                              letterSpacing: 0,
                                             ),
                                       ),
                                     ),
@@ -150,7 +158,7 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                                                     .labelLarge
                                                     .override(
                                                       fontFamily: 'Inter',
-                                                      letterSpacing: 0.0,
+                                                      letterSpacing: 0,
                                                     ),
                                             hintText: '00:00',
                                             hintStyle:
@@ -162,37 +170,37 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                                                           FlutterFlowTheme.of(
                                                                   context)
                                                               .accent4,
-                                                      letterSpacing: 0.0,
+                                                      letterSpacing: 0,
                                                     ),
                                             enabledBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .alternate,
-                                                width: 1.0,
+                                                width: 1,
                                               ),
                                               borderRadius:
-                                                  BorderRadius.circular(12.0),
+                                                  BorderRadius.circular(12),
                                             ),
                                             focusedBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .primary,
-                                                width: 1.0,
+                                                width: 1,
                                               ),
                                               borderRadius:
-                                                  BorderRadius.circular(12.0),
+                                                  BorderRadius.circular(12),
                                             ),
                                             errorBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .error,
-                                                width: 1.0,
+                                                width: 1,
                                               ),
                                               borderRadius:
-                                                  BorderRadius.circular(12.0),
+                                                  BorderRadius.circular(12),
                                             ),
                                             focusedErrorBorder:
                                                 OutlineInputBorder(
@@ -200,10 +208,10 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .error,
-                                                width: 1.0,
+                                                width: 1,
                                               ),
                                               borderRadius:
-                                                  BorderRadius.circular(12.0),
+                                                  BorderRadius.circular(12),
                                             ),
                                             filled: true,
                                             fillColor:
@@ -211,13 +219,13 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                                                     .secondaryBackground,
                                             contentPadding:
                                                 EdgeInsetsDirectional.fromSTEB(
-                                                    12.0, 10.0, 12.0, 10.0),
+                                                    12, 10, 12, 10),
                                           ),
                                           style: FlutterFlowTheme.of(context)
                                               .bodyLarge
                                               .override(
                                                 fontFamily: 'Inter',
-                                                letterSpacing: 0.0,
+                                                letterSpacing: 0,
                                               ),
                                           maxLines: null,
                                           keyboardType: TextInputType.number,
@@ -256,8 +264,8 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                                                           .headlineLarge
                                                           .override(
                                                             fontFamily: 'Inter',
-                                                            fontSize: 32.0,
-                                                            letterSpacing: 0.0,
+                                                            fontSize: 32,
+                                                            letterSpacing: 0,
                                                             fontWeight:
                                                                 FontWeight.w600,
                                                           ),
@@ -281,7 +289,7 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                                                       FlutterFlowTheme.of(
                                                               context)
                                                           .primaryText,
-                                                  iconSize: 24.0,
+                                                  iconSize: 24,
                                                 );
                                               },
                                             );
@@ -311,22 +319,21 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                                           },
                                           child: Container(
                                             width: double.infinity,
-                                            height: 48.0,
+                                            height: 48,
                                             decoration: BoxDecoration(
                                               color: Colors.transparent,
                                             ),
                                             alignment:
-                                                AlignmentDirectional(1.0, 0.0),
+                                                AlignmentDirectional(1, 0),
                                             child: Padding(
                                               padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      0.0, 0.0, 12.0, 0.0),
+                                                  .fromSTEB(0, 0, 12, 0),
                                               child: FaIcon(
                                                 FontAwesomeIcons.clock,
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .accent4,
-                                                size: 20.0,
+                                                size: 20,
                                               ),
                                             ),
                                           ),
@@ -337,22 +344,22 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 0.0, 12.0),
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 0, 0, 12),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 0.0, 4.0),
+                                          0, 0, 0, 4),
                                       child: Text(
                                         'Título',
                                         style: FlutterFlowTheme.of(context)
                                             .labelMedium
                                             .override(
                                               fontFamily: 'Inter',
-                                              letterSpacing: 0.0,
+                                              letterSpacing: 0,
                                             ),
                                       ),
                                     ),
@@ -366,7 +373,7 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                                             .labelLarge
                                             .override(
                                               fontFamily: 'Inter',
-                                              letterSpacing: 0.0,
+                                              letterSpacing: 0,
                                             ),
                                         hintText: 'Lembrete',
                                         hintStyle: FlutterFlowTheme.of(context)
@@ -376,56 +383,56 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .accent4,
-                                              letterSpacing: 0.0,
+                                              letterSpacing: 0,
                                             ),
                                         enabledBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
                                                 .alternate,
-                                            width: 1.0,
+                                            width: 1,
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
+                                              BorderRadius.circular(12),
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
                                                 .primary,
-                                            width: 1.0,
+                                            width: 1,
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
+                                              BorderRadius.circular(12),
                                         ),
                                         errorBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
                                                 .error,
-                                            width: 1.0,
+                                            width: 1,
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
+                                              BorderRadius.circular(12),
                                         ),
                                         focusedErrorBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
                                                 .error,
-                                            width: 1.0,
+                                            width: 1,
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
+                                              BorderRadius.circular(12),
                                         ),
                                         filled: true,
                                         fillColor: FlutterFlowTheme.of(context)
                                             .secondaryBackground,
                                         contentPadding:
                                             EdgeInsetsDirectional.fromSTEB(
-                                                12.0, 10.0, 12.0, 10.0),
+                                                12, 10, 12, 10),
                                       ),
                                       style: FlutterFlowTheme.of(context)
                                           .bodyLarge
                                           .override(
                                             fontFamily: 'Inter',
-                                            letterSpacing: 0.0,
+                                            letterSpacing: 0,
                                           ),
                                       maxLines: null,
                                       validator: _model
@@ -436,115 +443,119 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                                 ),
                               ),
                               Divider(
-                                height: 1.0,
-                                thickness: 1.0,
+                                height: 1,
+                                thickness: 1,
                                 color: Color(0xFFEAECF0),
                               ),
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 0.0, 12.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 0.0, 4.0),
-                                      child: RichText(
-                                        textScaler:
-                                            MediaQuery.of(context).textScaler,
-                                        text: TextSpan(
-                                          children: [
-                                            TextSpan(
-                                              text: 'Repetir ',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelMedium
-                                                      .override(
-                                                        fontFamily: 'Inter',
-                                                        letterSpacing: 0.0,
-                                                      ),
-                                            ),
-                                            TextSpan(
-                                              text: '(dias da semana)',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelLarge
-                                                      .override(
-                                                        fontFamily: 'Inter',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .accent4,
-                                                        letterSpacing: 0.0,
-                                                      ),
-                                            )
-                                          ],
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                fontFamily: 'Inter',
-                                                letterSpacing: 0.0,
+                              if (true == false)
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 0, 0, 12),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0, 0, 0, 4),
+                                        child: RichText(
+                                          textScaler:
+                                              MediaQuery.of(context).textScaler,
+                                          text: TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: 'Repetir ',
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .labelMedium
+                                                        .override(
+                                                          fontFamily: 'Inter',
+                                                          letterSpacing: 0,
+                                                        ),
                                               ),
+                                              TextSpan(
+                                                text: '(dias da semana)',
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .labelLarge
+                                                        .override(
+                                                          fontFamily: 'Inter',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .accent4,
+                                                          letterSpacing: 0,
+                                                        ),
+                                              )
+                                            ],
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily: 'Inter',
+                                                  letterSpacing: 0,
+                                                ),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    FlutterFlowDropDown<String>(
-                                      multiSelectController: _model
-                                              .repeatDayValueController ??=
-                                          FormListFieldController<String>(null),
-                                      options: [
-                                        'Seg',
-                                        'Ter',
-                                        'Qua',
-                                        'Qui',
-                                        'Sex'
-                                      ],
-                                      height: 48.0,
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .bodyLarge
-                                          .override(
-                                            fontFamily: 'Inter',
-                                            color: FlutterFlowTheme.of(context)
-                                                .accent4,
-                                            letterSpacing: 0.0,
-                                          ),
-                                      hintText: 'Nunca',
-                                      icon: Icon(
-                                        Icons.keyboard_arrow_down_rounded,
-                                        color: FlutterFlowTheme.of(context)
-                                            .accent4,
-                                        size: 24.0,
+                                      FlutterFlowDropDown<String>(
+                                        multiSelectController:
+                                            _model.repeatDayValueController ??=
+                                                FormListFieldController<String>(
+                                                    null),
+                                        options: [
+                                          'Seg',
+                                          'Ter',
+                                          'Qua',
+                                          'Qui',
+                                          'Sex'
+                                        ],
+                                        height: 48,
+                                        textStyle: FlutterFlowTheme.of(context)
+                                            .bodyLarge
+                                            .override(
+                                              fontFamily: 'Inter',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .accent4,
+                                              letterSpacing: 0,
+                                            ),
+                                        hintText: 'Nunca',
+                                        icon: Icon(
+                                          Icons.keyboard_arrow_down_rounded,
+                                          color: FlutterFlowTheme.of(context)
+                                              .accent4,
+                                          size: 24,
+                                        ),
+                                        fillColor: FlutterFlowTheme.of(context)
+                                            .secondaryBackground,
+                                        elevation: 2,
+                                        borderColor:
+                                            FlutterFlowTheme.of(context)
+                                                .alternate,
+                                        borderWidth: 1,
+                                        borderRadius: 12,
+                                        margin: EdgeInsetsDirectional.fromSTEB(
+                                            12, 0, 12, 0),
+                                        hidesUnderline: true,
+                                        isOverButton: true,
+                                        isSearchable: false,
+                                        isMultiSelect: true,
+                                        onMultiSelectChanged: (val) => setState(
+                                            () => _model.repeatDayValue = val),
                                       ),
-                                      fillColor: FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
-                                      elevation: 2.0,
-                                      borderColor: FlutterFlowTheme.of(context)
-                                          .alternate,
-                                      borderWidth: 1.0,
-                                      borderRadius: 12.0,
-                                      margin: EdgeInsetsDirectional.fromSTEB(
-                                          12.0, 0.0, 12.0, 0.0),
-                                      hidesUnderline: true,
-                                      isOverButton: true,
-                                      isSearchable: false,
-                                      isMultiSelect: true,
-                                      onMultiSelectChanged: (val) => setState(
-                                          () => _model.repeatDayValue = val),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
                               Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 0.0, 12.0),
+                                    0, 12, 0, 12),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 0.0, 4.0),
+                                          0, 0, 0, 4),
                                       child: RichText(
                                         textScaler:
                                             MediaQuery.of(context).textScaler,
@@ -557,7 +568,7 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                                                       .labelMedium
                                                       .override(
                                                         fontFamily: 'Inter',
-                                                        letterSpacing: 0.0,
+                                                        letterSpacing: 0,
                                                       ),
                                             ),
                                             TextSpan(
@@ -571,7 +582,7 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                                                             FlutterFlowTheme.of(
                                                                     context)
                                                                 .accent4,
-                                                        letterSpacing: 0.0,
+                                                        letterSpacing: 0,
                                                       ),
                                             )
                                           ],
@@ -579,7 +590,7 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                                               .bodyMedium
                                               .override(
                                                 fontFamily: 'Inter',
-                                                letterSpacing: 0.0,
+                                                letterSpacing: 0,
                                               ),
                                         ),
                                       ),
@@ -587,10 +598,7 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                                     FlutterFlowDropDown<String>(
                                       controller:
                                           _model.reapeatHourValueController ??=
-                                              FormFieldController<String>(
-                                        _model.reapeatHourValue ??=
-                                            'De 3 em 3 horas',
-                                      ),
+                                              FormFieldController<String>(null),
                                       options: [
                                         'De 1 em 1 horas',
                                         'De 2 em 2 horas',
@@ -607,31 +615,31 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                                       ],
                                       onChanged: (val) => setState(
                                           () => _model.reapeatHourValue = val),
-                                      height: 48.0,
+                                      height: 48,
                                       textStyle: FlutterFlowTheme.of(context)
                                           .bodyLarge
                                           .override(
                                             fontFamily: 'Inter',
                                             color: FlutterFlowTheme.of(context)
                                                 .accent4,
-                                            letterSpacing: 0.0,
+                                            letterSpacing: 0,
                                           ),
                                       hintText: 'Nunca',
                                       icon: Icon(
                                         Icons.keyboard_arrow_down_rounded,
                                         color: FlutterFlowTheme.of(context)
                                             .accent4,
-                                        size: 24.0,
+                                        size: 24,
                                       ),
                                       fillColor: FlutterFlowTheme.of(context)
                                           .secondaryBackground,
-                                      elevation: 2.0,
+                                      elevation: 2,
                                       borderColor: FlutterFlowTheme.of(context)
                                           .alternate,
-                                      borderWidth: 1.0,
-                                      borderRadius: 12.0,
+                                      borderWidth: 1,
+                                      borderRadius: 12,
                                       margin: EdgeInsetsDirectional.fromSTEB(
-                                          12.0, 0.0, 12.0, 0.0),
+                                          12, 0, 12, 0),
                                       hidesUnderline: true,
                                       isOverButton: true,
                                       isSearchable: false,
@@ -640,188 +648,23 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                                   ],
                                 ),
                               ),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 0.0, 4.0),
-                                          child: Text(
-                                            'Min de dias',
-                                            style: FlutterFlowTheme.of(context)
-                                                .labelMedium
-                                                .override(
-                                                  fontFamily: 'Inter',
-                                                  letterSpacing: 0.0,
-                                                ),
-                                          ),
-                                        ),
-                                        FlutterFlowDropDown<String>(
-                                          controller:
-                                              _model.minDaysValueController ??=
-                                                  FormFieldController<String>(
-                                            _model.minDaysValue ??= '1',
-                                          ),
-                                          options: [
-                                            '1',
-                                            '2',
-                                            '3',
-                                            '4',
-                                            '5',
-                                            '6',
-                                            '7',
-                                            '8',
-                                            '9',
-                                            '10',
-                                            '11',
-                                            '12'
-                                          ],
-                                          onChanged: (val) => setState(
-                                              () => _model.minDaysValue = val),
-                                          height: 48.0,
-                                          textStyle: FlutterFlowTheme.of(
-                                                  context)
-                                              .bodyLarge
-                                              .override(
-                                                fontFamily: 'Inter',
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .accent4,
-                                                letterSpacing: 0.0,
-                                              ),
-                                          hintText: 'Selecione',
-                                          icon: Icon(
-                                            Icons.keyboard_arrow_down_rounded,
-                                            color: FlutterFlowTheme.of(context)
-                                                .accent4,
-                                            size: 24.0,
-                                          ),
-                                          fillColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .secondaryBackground,
-                                          elevation: 2.0,
-                                          borderColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .alternate,
-                                          borderWidth: 1.0,
-                                          borderRadius: 12.0,
-                                          margin:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  12.0, 0.0, 12.0, 0.0),
-                                          hidesUnderline: true,
-                                          isOverButton: true,
-                                          isSearchable: false,
-                                          isMultiSelect: false,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 0.0, 4.0),
-                                          child: Text(
-                                            'Máx de dias',
-                                            style: FlutterFlowTheme.of(context)
-                                                .labelMedium
-                                                .override(
-                                                  fontFamily: 'Inter',
-                                                  letterSpacing: 0.0,
-                                                ),
-                                          ),
-                                        ),
-                                        FlutterFlowDropDown<String>(
-                                          controller:
-                                              _model.maxDaysValueController ??=
-                                                  FormFieldController<String>(
-                                            _model.maxDaysValue ??= '12',
-                                          ),
-                                          options: [
-                                            '1',
-                                            '2',
-                                            '3',
-                                            '4',
-                                            '5',
-                                            '6',
-                                            '7',
-                                            '8',
-                                            '9',
-                                            '10',
-                                            '11',
-                                            '12'
-                                          ],
-                                          onChanged: (val) => setState(
-                                              () => _model.maxDaysValue = val),
-                                          height: 48.0,
-                                          textStyle: FlutterFlowTheme.of(
-                                                  context)
-                                              .bodyLarge
-                                              .override(
-                                                fontFamily: 'Inter',
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .accent4,
-                                                letterSpacing: 0.0,
-                                              ),
-                                          hintText: 'Selecione',
-                                          icon: Icon(
-                                            Icons.keyboard_arrow_down_rounded,
-                                            color: FlutterFlowTheme.of(context)
-                                                .accent4,
-                                            size: 24.0,
-                                          ),
-                                          fillColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .secondaryBackground,
-                                          elevation: 2.0,
-                                          borderColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .alternate,
-                                          borderWidth: 1.0,
-                                          borderRadius: 12.0,
-                                          margin:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  12.0, 0.0, 12.0, 0.0),
-                                          hidesUnderline: true,
-                                          isOverButton: true,
-                                          isSearchable: false,
-                                          isMultiSelect: false,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ].divide(SizedBox(width: 12.0)),
-                              ),
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 0.0, 12.0),
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 0, 0, 12),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 0.0, 4.0),
+                                          0, 0, 0, 4),
                                       child: Text(
                                         'Uso',
                                         style: FlutterFlowTheme.of(context)
                                             .labelMedium
                                             .override(
                                               fontFamily: 'Inter',
-                                              letterSpacing: 0.0,
+                                              letterSpacing: 0,
                                             ),
                                       ),
                                     ),
@@ -835,7 +678,7 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                                             .labelLarge
                                             .override(
                                               fontFamily: 'Inter',
-                                              letterSpacing: 0.0,
+                                              letterSpacing: 0,
                                             ),
                                         hintText: 'Ex.: 10 gotas',
                                         hintStyle: FlutterFlowTheme.of(context)
@@ -845,56 +688,56 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .accent4,
-                                              letterSpacing: 0.0,
+                                              letterSpacing: 0,
                                             ),
                                         enabledBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
                                                 .alternate,
-                                            width: 1.0,
+                                            width: 1,
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
+                                              BorderRadius.circular(12),
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
                                                 .primary,
-                                            width: 1.0,
+                                            width: 1,
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
+                                              BorderRadius.circular(12),
                                         ),
                                         errorBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
                                                 .error,
-                                            width: 1.0,
+                                            width: 1,
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
+                                              BorderRadius.circular(12),
                                         ),
                                         focusedErrorBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
                                                 .error,
-                                            width: 1.0,
+                                            width: 1,
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
+                                              BorderRadius.circular(12),
                                         ),
                                         filled: true,
                                         fillColor: FlutterFlowTheme.of(context)
                                             .secondaryBackground,
                                         contentPadding:
                                             EdgeInsetsDirectional.fromSTEB(
-                                                12.0, 10.0, 12.0, 10.0),
+                                                12, 10, 12, 10),
                                       ),
                                       style: FlutterFlowTheme.of(context)
                                           .bodyLarge
                                           .override(
                                             fontFamily: 'Inter',
-                                            letterSpacing: 0.0,
+                                            letterSpacing: 0,
                                           ),
                                       maxLines: null,
                                       validator: _model
@@ -910,44 +753,33 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                       ),
                     ),
                     Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 12.0),
+                      padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 12),
                       child: FFButtonWidget(
                         onPressed: () async {
-                          if (_model.formKey.currentState == null ||
-                              !_model.formKey.currentState!.validate()) {
-                            return;
-                          }
-                          if (_model.datePicked == null) {
-                            return;
-                          }
-                          if (_model.minDaysValue == null) {
-                            return;
-                          }
-                          if (_model.maxDaysValue == null) {
-                            return;
-                          }
+                          try {
+                            _model.upDateReminder(_reminder.id);
+                            context.pop();
+                          } catch (e) {}
                         },
                         text: 'Salvar',
                         options: FFButtonOptions(
                           width: double.infinity,
-                          height: 44.0,
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 0.0),
-                          iconPadding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 0.0),
+                          height: 44,
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                          iconPadding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                           color: FlutterFlowTheme.of(context).primary,
                           textStyle:
                               FlutterFlowTheme.of(context).titleSmall.override(
                                     fontFamily: 'Inter',
-                                    letterSpacing: 0.0,
+                                    letterSpacing: 0,
                                   ),
-                          elevation: 1.0,
+                          elevation: 1,
                           borderSide: BorderSide(
                             color: Colors.transparent,
-                            width: 1.0,
+                            width: 1,
                           ),
-                          borderRadius: BorderRadius.circular(12.0),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                     ),
@@ -955,8 +787,27 @@ class _EditReminderWidgetState extends State<EditReminderWidget> {
                       padding:
                           EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 12.0),
                       child: FFButtonWidget(
-                        onPressed: () {
-                          print('Button pressed ...');
+                        onPressed: () async {
+                          bool removed = await _model.reminderManager
+                              .deleteReminder(widget.reminderId!);
+
+                          if (removed) {
+                            context.pop();
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Erro ao excluir o lembrete',
+                                  style: TextStyle(
+                                    color: FlutterFlowTheme.of(context).info,
+                                  ),
+                                ),
+                                duration: Duration(milliseconds: 4000),
+                                backgroundColor:
+                                    FlutterFlowTheme.of(context).error,
+                              ),
+                            );
+                          }
                         },
                         text: 'Excluir',
                         options: FFButtonOptions(

@@ -1,3 +1,5 @@
+import 'package:spherica/models/reminder.dart';
+
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -105,233 +107,24 @@ class _RemindersWidgetState extends State<RemindersWidget> {
                 child: Padding(
                   padding:
                       EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 0.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Divider(
-                        height: 1.0,
-                        thickness: 1.0,
-                        color: Color(0xFFEAECF0),
-                      ),
-                      InkWell(
-                        splashColor: Colors.transparent,
-                        focusColor: Colors.transparent,
-                        hoverColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        onTap: () async {
-                          context.pushNamed('EditReminder');
-                        },
-                        child: Container(
-                          height: 72.0,
-                          decoration: BoxDecoration(),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      16.0, 0.0, 16.0, 0.0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Colírio',
-                                            style: FlutterFlowTheme.of(context)
-                                                .labelLarge
-                                                .override(
-                                                  fontFamily: 'Inter',
-                                                  letterSpacing: 0.0,
-                                                ),
-                                          ),
-                                          Text(
-                                            '00:30',
-                                            style: FlutterFlowTheme.of(context)
-                                                .titleLarge
-                                                .override(
-                                                  fontFamily: 'Inter',
-                                                  fontSize: 20.0,
-                                                  letterSpacing: 0.0,
-                                                ),
-                                          ),
-                                        ],
-                                      ),
-                                      Switch.adaptive(
-                                        value: _model.switchValue1!,
-                                        onChanged: (newValue) async {
-                                          setState(() =>
-                                              _model.switchValue1 = newValue!);
-                                        },
-                                        activeColor:
-                                            FlutterFlowTheme.of(context).info,
-                                        activeTrackColor: Color(0xFF397EF5),
-                                        inactiveTrackColor: Color(0xFFCECECE),
-                                        inactiveThumbColor:
-                                            FlutterFlowTheme.of(context).info,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Divider(
-                                height: 1.0,
-                                thickness: 1.0,
-                                color: Color(0xFFEAECF0),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: 72.0,
-                        decoration: BoxDecoration(),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    16.0, 0.0, 16.0, 0.0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Remédio',
-                                          style: FlutterFlowTheme.of(context)
-                                              .labelLarge
-                                              .override(
-                                                fontFamily: 'Inter',
-                                                letterSpacing: 0.0,
-                                              ),
-                                        ),
-                                        Text(
-                                          '15:30',
-                                          style: FlutterFlowTheme.of(context)
-                                              .titleLarge
-                                              .override(
-                                                fontFamily: 'Inter',
-                                                fontSize: 20.0,
-                                                letterSpacing: 0.0,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                    Switch.adaptive(
-                                      value: _model.switchValue2!,
-                                      onChanged: (newValue) async {
-                                        setState(() =>
-                                            _model.switchValue2 = newValue!);
-                                      },
-                                      activeColor:
-                                          FlutterFlowTheme.of(context).info,
-                                      activeTrackColor: Color(0xFF397EF5),
-                                      inactiveTrackColor: Color(0xFFCECECE),
-                                      inactiveThumbColor:
-                                          FlutterFlowTheme.of(context).info,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Divider(
-                              height: 1.0,
-                              thickness: 1.0,
-                              color: Color(0xFFEAECF0),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height: 72.0,
-                        decoration: BoxDecoration(),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    16.0, 0.0, 16.0, 0.0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Ir no médico',
-                                          style: FlutterFlowTheme.of(context)
-                                              .labelLarge
-                                              .override(
-                                                fontFamily: 'Inter',
-                                                letterSpacing: 0.0,
-                                              ),
-                                        ),
-                                        Text(
-                                          '09:00',
-                                          style: FlutterFlowTheme.of(context)
-                                              .titleLarge
-                                              .override(
-                                                fontFamily: 'Inter',
-                                                fontSize: 20.0,
-                                                letterSpacing: 0.0,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                    Switch.adaptive(
-                                      value: _model.switchValue3!,
-                                      onChanged: (newValue) async {
-                                        setState(() =>
-                                            _model.switchValue3 = newValue!);
-                                      },
-                                      activeColor:
-                                          FlutterFlowTheme.of(context).info,
-                                      activeTrackColor: Color(0xFF397EF5),
-                                      inactiveTrackColor: Color(0xFFCECECE),
-                                      inactiveThumbColor:
-                                          FlutterFlowTheme.of(context).info,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Divider(
-                              height: 1.0,
-                              thickness: 1.0,
-                              color: Color(0xFFEAECF0),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                  child: ValueListenableBuilder<List<Reminder>>(
+                    valueListenable:
+                        _model.reminderManager.remindersListNotifier,
+                    builder: (context, reminders, _) {
+                      if (reminders.isNotEmpty) {
+                        return ListView.builder(
+                          itemCount: reminders.length,
+                          itemBuilder: (context, index) {
+                            final reminder = reminders[index];
+                            return _buildReminder(reminder);
+                          },
+                        );
+                      } else {
+                        return const Center(
+                          child: Text('Você não tem lembretes'),
+                        );
+                      }
+                    },
                   ),
                 ),
               ),
@@ -347,5 +140,87 @@ class _RemindersWidgetState extends State<RemindersWidget> {
         ),
       ),
     );
+  }
+
+  Widget _buildReminder(Reminder reminder) {
+    return InkWell(
+        splashColor: Colors.transparent,
+        focusColor: Colors.transparent,
+        hoverColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        onTap: () async {
+          context.pushNamed(
+            'EditReminder',
+            queryParameters: {
+              'reminderId': serializeParam(
+                reminder.id,
+                ParamType.int,
+              ),
+            }.withoutNulls,
+          );
+        },
+        child: Container(
+            height: 72.0,
+            decoration: BoxDecoration(),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              reminder.title,
+                              style: FlutterFlowTheme.of(context)
+                                  .labelLarge
+                                  .override(
+                                    fontFamily: 'Inter',
+                                    letterSpacing: 0.0,
+                                  ),
+                            ),
+                            Text(
+                              '${reminder.hour.toString().padLeft(2, '0')}:${reminder.minute.toString().padLeft(2, '0')}',
+                              style: FlutterFlowTheme.of(context)
+                                  .titleLarge
+                                  .override(
+                                    fontFamily: 'Inter',
+                                    fontSize: 20.0,
+                                    letterSpacing: 0.0,
+                                  ),
+                            ),
+                          ],
+                        ),
+                        Switch.adaptive(
+                          value: reminder.enabled,
+                          onChanged: (newValue) async {
+                            _model.reminderManager
+                                .updateReminderStatus(reminder.id, newValue);
+                          },
+                          activeColor: FlutterFlowTheme.of(context).info,
+                          activeTrackColor: Color(0xFF397EF5),
+                          inactiveTrackColor: Color(0xFFCECECE),
+                          inactiveThumbColor: FlutterFlowTheme.of(context).info,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Divider(
+                  height: 1.0,
+                  thickness: 1.0,
+                  color: Color(0xFFEAECF0),
+                ),
+              ],
+            )));
   }
 }
