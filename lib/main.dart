@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:spherica/services/reminder_service.dart';
 
 import 'auth/custom_auth/auth_util.dart';
 import 'auth/custom_auth/custom_auth_user_provider.dart';
@@ -15,6 +16,14 @@ import 'index.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await ReminderManager.initialize(
+      channelDescription: 'Canal de notificações',
+      channelGroupKey: 'reminder_channel_group',
+      channelGroupName: 'Reminder Group',
+      channelKey: 'reminder_key',
+      channelName: 'Reminder Channel',
+      ledColor: Colors.white,
+      defaultColor: Colors.blue);
   GoRouter.optionURLReflectsImperativeAPIs = true;
   usePathUrlStrategy();
 

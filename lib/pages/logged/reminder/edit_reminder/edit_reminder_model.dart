@@ -36,6 +36,9 @@ class EditReminderModel extends FlutterFlowModel<EditReminderWidget> {
   }
 
   String? getHourlyInterval(int? interval) {
+
+    if(interval == 0) return null;
+
     const options = [
       'De 1 em 1 horas',
       'De 2 em 2 horas',
@@ -63,7 +66,7 @@ class EditReminderModel extends FlutterFlowModel<EditReminderWidget> {
       return options[hours - 1];
     }
 
-    return null; // ou você pode retornar uma string padrão ou lançar uma exceção
+    return null; 
   }
 
   DateTime? datePicked;
@@ -79,15 +82,15 @@ class EditReminderModel extends FlutterFlowModel<EditReminderWidget> {
     return null;
   }
 
-  // State field(s) for repeatDay widget.
+
   List<String>? repeatDayValue;
   FormFieldController<List<String>>? repeatDayValueController;
 
-  // State field(s) for reapeatHour widget.
+
   String? reapeatHourValue;
   FormFieldController<String>? reapeatHourValueController;
 
-  // State field(s) for use widget.
+
   FocusNode? useFocusNode;
   TextEditingController? useTextController;
   String? Function(BuildContext, String?)? useTextControllerValidator;
